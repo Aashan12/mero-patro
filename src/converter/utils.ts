@@ -30,6 +30,9 @@ export function utcMsToDate(utcMs: number): Date {
  * Timezone-safe: always reads the UTC year/month/date components.
  */
 export function adDateToDaysSinceEpoch(adDate: Date): number {
+  if (!(adDate instanceof Date) || !Number.isFinite(adDate.getTime())) {
+    throw new RangeError('Invalid Gregorian Date.')
+  }
   const targetMs = Date.UTC(adDate.getUTCFullYear(), adDate.getUTCMonth(), adDate.getUTCDate())
   return Math.round((targetMs - BS_EPOCH_UTC_MS) / MS_PER_DAY)
 }
@@ -39,6 +42,10 @@ export function adDateToDaysSinceEpoch(adDate: Date): number {
  * Checks year range, month range, and day range (including actual month length).
  */
 export function validateBSDate(date: BSDate): void {
+  if (date === null || typeof date !== 'object' ||
+      !Number.isInteger(date.year) || !Number.isInteger(date.month) || !Number.isInteger(date.day)) {
+    throw new RangeError('BS date must have integer year, month, and day values.')
+  }
   if (date.year < BS_YEAR_MIN || date.year > BS_YEAR_MAX) {
     throw new RangeError(
       `BS year ${date.year} is outside the supported range (${BS_YEAR_MIN}–${BS_YEAR_MAX}).`

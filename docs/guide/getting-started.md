@@ -16,7 +16,7 @@ This package is not a full consumer app. You are responsible for your own UI, st
 
 1. Install Node.js 18+.
 2. Add the package with your package manager.
-3. Import only from the package root (`nepali-calendar-engine`).
+3. Import only from the package root (`mero-patro`).
 4. Run a smoke test (AD→BS and BS→AD).
 5. Keep all AD date reads UTC-safe via `getUTC*`.
 
@@ -24,13 +24,13 @@ This package is not a full consumer app. You are responsible for your own UI, st
 
 ```bash
 # pnpm
-pnpm add nepali-calendar-engine
+pnpm add mero-patro
 
 # npm
-npm install nepali-calendar-engine
+npm install mero-patro
 
 # yarn
-yarn add nepali-calendar-engine
+yarn add mero-patro
 ```
 
 **Requirements:** Node.js 18+. The package ships both ESM and CommonJS bundles — no bundler config needed.
@@ -40,7 +40,7 @@ yarn add nepali-calendar-engine
 ## Setup smoke test
 
 ```ts
-import { toBS, toAD } from 'nepali-calendar-engine'
+import { toBS, toAD } from 'mero-patro'
 
 const bs = toBS(new Date('2025-04-13'))
 const ad = toAD({ year: 2082, month: 1, day: 1 })
@@ -63,7 +63,7 @@ If that basic round-trip does not behave as expected, stop there and fix the int
 ### AD → BS
 
 ```ts
-import { toBS } from 'nepali-calendar-engine'
+import { toBS } from 'mero-patro'
 
 const bs = toBS(new Date('2025-04-13'))
 console.log(bs)
@@ -74,7 +74,7 @@ console.log(bs)
 ### BS → AD
 
 ```ts
-import { toAD } from 'nepali-calendar-engine'
+import { toAD } from 'mero-patro'
 
 const ad = toAD({ year: 2082, month: 1, day: 1 })
 
@@ -89,7 +89,7 @@ console.log(ad.getUTCDate())     // 14
 ### Today in BS
 
 ```ts
-import { today } from 'nepali-calendar-engine'
+import { today } from 'mero-patro'
 
 const todayBS = today()
 console.log(todayBS)
@@ -104,7 +104,7 @@ console.log(todayBS)
 ### Format a BS date
 
 ```ts
-import { formatBS } from 'nepali-calendar-engine'
+import { formatBS } from 'mero-patro'
 
 const formatted = formatBS({ year: 2082, month: 1, day: 15 })
 console.log(formatted)
@@ -121,7 +121,7 @@ console.log(custom)
 ## Step 2 — Get month info
 
 ```ts
-import { getMonthDays } from 'nepali-calendar-engine'
+import { getMonthDays } from 'mero-patro'
 
 const days = getMonthDays(2082, 1)  // Baishakh of BS 2082
 console.log(days)
@@ -137,7 +137,7 @@ Months are **1-indexed** — 1 = Baishakh, 12 = Chaitra. Month lengths vary per 
 `getMonthCalendar` is async because it loads panchang data for the year.
 
 ```ts
-import { getMonthCalendar } from 'nepali-calendar-engine'
+import { getMonthCalendar } from 'mero-patro'
 
 const calendar = await getMonthCalendar(2082, 1)
 
@@ -166,7 +166,7 @@ The grid always starts on Sunday and includes overflow days from the previous an
 Panchang (पञ्चाङ्ग) is the Hindu almanac — it tells you the tithi (lunar day), paksha (moon phase), nakshatra (lunar mansion), yoga, and karana for any given day.
 
 ```ts
-import { getPanchang, ensurePanchangYear } from 'nepali-calendar-engine'
+import { getPanchang, ensurePanchangYear } from 'mero-patro'
 
 // Preload the year's data first (one-time async cost per year)
 await ensurePanchangYear(2082)
@@ -197,7 +197,7 @@ await ensurePanchangYear(2082)
 ## Step 5 — Get events and festivals
 
 ```ts
-import { getEventsForDate, getEventsForMonth } from 'nepali-calendar-engine'
+import { getEventsForDate, getEventsForMonth } from 'mero-patro'
 
 // Events for a single day
 const events = getEventsForDate({ year: 2082, month: 7, day: 15 })
@@ -220,7 +220,7 @@ const monthEvents = getEventsForMonth(2082, 7)
 ## Step 6 — Find auspicious dates
 
 ```ts
-import { getAuspiciousDates, isAuspicious } from 'nepali-calendar-engine'
+import { getAuspiciousDates, isAuspicious } from 'mero-patro'
 
 // Get all auspicious dates in a month for a specific purpose
 const weddingDays = getAuspiciousDates(2082, 2, 'wedding')
@@ -250,7 +250,7 @@ import {
   listInternationalObservances,
   getInternationalObservanceById,
   getInternationalObservancesByAdDate,
-} from 'nepali-calendar-engine'
+} from 'mero-patro'
 
 const all = listInternationalObservances()
 const worldHealth = getInternationalObservanceById('world-health-day')
@@ -278,7 +278,7 @@ import type {
   AuspiciousClassification, // 'auspicious' | 'inauspicious' | 'neutral'
   EventType,       // 'festival' | 'public_holiday' | 'auspicious_date' | ...
   EventCategory,   // 'wedding' | 'bratabandha' | 'religious' | ...
-} from 'nepali-calendar-engine'
+} from 'mero-patro'
 ```
 
 When in doubt, prefer importing types from the root package instead of deep module paths. That keeps your code aligned with the supported public API.

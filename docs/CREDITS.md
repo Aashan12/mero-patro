@@ -1,6 +1,6 @@
 # Credits
 
-## nepali-calendar-engine
+## mero-patro
 
 ---
 
@@ -24,6 +24,6 @@ A comprehensive Bikram Sambat calendar engine providing:
 
 ---
 
-**Package:** `nepali-calendar-engine`  
+**Package:** `mero-patro`
 **Version:** 0.1.0  
 **License:** MIT

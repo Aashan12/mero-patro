@@ -1,10 +1,10 @@
-# Nepali Calendar Engine
+# Mero Patro
 
-[![npm version](https://img.shields.io/npm/v/nepali-calendar-engine)](https://www.npmjs.com/package/nepali-calendar-engine)
-[![npm downloads](https://img.shields.io/npm/dm/nepali-calendar-engine)](https://www.npmjs.com/package/nepali-calendar-engine)
-[![license](https://img.shields.io/npm/l/nepali-calendar-engine)](./LICENSE)
+[![npm version](https://img.shields.io/npm/v/mero-patro)](https://www.npmjs.com/package/mero-patro)
+[![npm downloads](https://img.shields.io/npm/dm/mero-patro)](https://www.npmjs.com/package/mero-patro)
+[![license](https://img.shields.io/npm/l/mero-patro)](./LICENSE)
 
-`nepali-calendar-engine` is a TypeScript package for Bikram Sambat (BS) calendar operations, including BS/AD conversion, calendar grid generation, panchang lookup, festival/holiday classification, BS date math, Nepal working day calculations, Devanagari string parsing, and iCalendar (.ics) exports.
+`mero-patro` is a TypeScript package for Bikram Sambat (BS) calendar operations, including BS/AD conversion, calendar grid generation, panchang lookup, festival/holiday classification, BS date math, Nepal working day calculations, Devanagari string parsing, and iCalendar (.ics) exports.
 
 ## Quick Glance
 
@@ -25,19 +25,19 @@
 ## Installation
 
 ```bash
-pnpm add nepali-calendar-engine
+pnpm add mero-patro
 ```
 
 ## Structured setup (application users)
 
 1. Install Node.js 18+.
 2. Install the package with your package manager (`pnpm`, `npm`, or `yarn`).
-3. Import from the root package export (`nepali-calendar-engine`) only.
+3. Import from the root package export (`mero-patro`) only.
 4. Validate your runtime wiring with a minimal conversion smoke test.
 5. For date outputs from `toAD()`, always use UTC getters (`getUTCFullYear()`, `getUTCMonth()`, `getUTCDate()`).
 
 ```ts
-import { toBS, toAD } from 'nepali-calendar-engine'
+import { toBS, toAD } from 'mero-patro'
 
 const bs = toBS(new Date('2025-04-13'))
 const ad = toAD({ year: 2082, month: 1, day: 1 })
@@ -58,9 +58,9 @@ import {
   isWorkingDay,
   parseBS,
   exportMonthToICS,
-} from 'nepali-calendar-engine'
+} from 'mero-patro'
 
-const bsDate = toBS(new Date(2025, 3, 14))
+const bsDate = toBS(new Date('2025-04-14T00:00:00Z'))
 const adDate = toAD({ year: 2082, month: 1, day: 1 })
 
 const month = await getMonthCalendar(2082, 1)
@@ -89,7 +89,7 @@ import {
   isWorkingDay,
   addWorkingDays,
   getWorkingDaysCount,
-} from 'nepali-calendar-engine'
+} from 'mero-patro'
 
 const start = { year: 2082, month: 1, day: 2 }
 
@@ -107,7 +107,7 @@ const workingCount = getWorkingDaysCount(start, futureDate)
 ## Date Formatting & Devanagari Parsing
 
 ```ts
-import { formatBS, parseBS } from 'nepali-calendar-engine'
+import { formatBS, parseBS } from 'mero-patro'
 
 // Parse ASCII or Devanagari strings
 const bs1 = parseBS('2082-01-01')
@@ -121,7 +121,7 @@ const formattedNe = formatBS(bs1, 'dddd, MMMM D, YYYY', { locale: 'ne' }) // "рд
 ## iCalendar (.ics) Export
 
 ```ts
-import { exportMonthToICS, exportToICS } from 'nepali-calendar-engine'
+import { exportMonthToICS, exportToICS } from 'mero-patro'
 
 // Export full month of events to .ics format string (compatible with Google/Apple Calendar)
 const monthICS = exportMonthToICS(2082, 1)
@@ -142,7 +142,7 @@ import {
   listInternationalObservances,
   getInternationalObservanceById,
   getInternationalObservancesByAdDate,
-} from 'nepali-calendar-engine'
+} from 'mero-patro'
 
 const all = listInternationalObservances()
 const worldHealth = getInternationalObservanceById('world-health-day')
@@ -158,7 +158,7 @@ Panchang data is computed from planetary positions at sunrise (astronomy-engine,
 ### Basic lookup
 
 ```ts
-import { getPanchang, ensurePanchangYear } from 'nepali-calendar-engine'
+import { getPanchang, ensurePanchangYear } from 'mero-patro'
 
 // Pre-load data for a year (async, call once before bulk queries)
 await ensurePanchangYear(2082)

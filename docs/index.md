@@ -1,9 +1,9 @@
-# nepali-calendar-engine
+# mero-patro
 
 A TypeScript package for Bikram Sambat (BS) date conversion, month-calendar generation, panchang lookup, and event resolution. It is designed as a developer-facing engine that other applications can build on top of, not as a full end-user app.
 
 ```bash
-pnpm add nepali-calendar-engine
+pnpm add mero-patro
 ```
 
 ---
@@ -24,7 +24,7 @@ If you are evaluating the package for a new project, read in this order:
 ### "I want to convert dates between BS and AD"
 
 ```ts
-import { toBS, toAD, today } from 'nepali-calendar-engine'
+import { toBS, toAD, today } from 'mero-patro'
 
 toBS(new Date(Date.UTC(2025, 3, 14))) // → { year: 2082, month: 1, day: 1 }
 toAD({ year: 2082, month: 1, day: 1 }).toISOString().slice(0, 10) // → '2025-04-14'
@@ -38,7 +38,7 @@ today() // → { bs, ad, weekday, monthName }
 ### "I want to build a Nepali calendar UI"
 
 ```ts
-import { getMonthCalendar } from 'nepali-calendar-engine'
+import { getMonthCalendar } from 'mero-patro'
 
 const cal = await getMonthCalendar(2082, 1)
 // cal.days → 35–42 CalendarDay objects, each with BS date, AD date,
@@ -52,7 +52,7 @@ const cal = await getMonthCalendar(2082, 1)
 ### "I want panchang, festival, or auspicious-date data"
 
 ```ts
-import { getPanchang, getEventsForDate, getAuspiciousDates } from 'nepali-calendar-engine'
+import { getPanchang, getEventsForDate, getAuspiciousDates } from 'mero-patro'
 
 getPanchang({ year: 2082, month: 1, day: 1 })
 // → { tithi: { number: 16, ... }, paksha: 'krishna', nakshatra: {...}, ... }

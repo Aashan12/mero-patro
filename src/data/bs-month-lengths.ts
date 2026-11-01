@@ -1,7 +1,8 @@
 /**
  * BS month length data and precomputed day-offset tables.
  *
- * Data source: subeshb1/Nepali-Date (cross-validated against established Nepali calendar libraries)
+ * Data source: https://github.com/subeshb1/Nepali-Date/blob/master/src/date-config.ts
+ * BS 2084-2086 month starts were also checked against Hamro Patro calendar pages.
  * Coverage: BS 2000–2090 (AD 1943–2033)
  * TODO: source and append data for BS 2091–2100 before those years become operationally relevant.
  *
@@ -37,7 +38,7 @@ export const monthDayOffsets = new Int32Array(YEAR_COUNT * 12)
     const lengths = data[String(year)]
     if (lengths === undefined || lengths.length !== 12) {
       throw new Error(
-        `[nepali-calendar-engine] Missing or corrupt month length data for BS ${year}.`
+        `[mero-patro] Missing or corrupt month length data for BS ${year}.`
       )
     }
     let monthCursor = 0
@@ -56,7 +57,7 @@ export const monthDayOffsets = new Int32Array(YEAR_COUNT * 12)
  * For high-throughput paths use the TypedArrays directly.
  */
 export function getMonthLengths(bsYear: number): number[] {
-  if (bsYear < BS_DATA_YEAR_MIN || bsYear > BS_DATA_YEAR_MAX) {
+  if (!Number.isInteger(bsYear) || bsYear < BS_DATA_YEAR_MIN || bsYear > BS_DATA_YEAR_MAX) {
     throw new RangeError(
       `No month length data for BS year ${bsYear}. ` +
       `Supported range: ${BS_DATA_YEAR_MIN}–${BS_DATA_YEAR_MAX}.`
@@ -70,10 +71,10 @@ export function getMonthLengths(bsYear: number): number[] {
  * Returns the number of days in a specific BS month. O(1).
  */
 export function getMonthDayCount(bsYear: number, bsMonth: number): number {
-  if (bsYear < BS_DATA_YEAR_MIN || bsYear > BS_DATA_YEAR_MAX) {
+  if (!Number.isInteger(bsYear) || bsYear < BS_DATA_YEAR_MIN || bsYear > BS_DATA_YEAR_MAX) {
     throw new RangeError(`No data for BS year ${bsYear}.`)
   }
-  if (bsMonth < 1 || bsMonth > 12) {
+  if (!Number.isInteger(bsMonth) || bsMonth < 1 || bsMonth > 12) {
     throw new RangeError(`Invalid BS month ${bsMonth}. Must be 1–12.`)
   }
   return monthLengthTable[(bsYear - BS_DATA_YEAR_MIN) * 12 + (bsMonth - 1)] as number

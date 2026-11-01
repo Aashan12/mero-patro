@@ -9,12 +9,19 @@ export { bsToAd as toAD, adToBs as toBS, formatBS, type FormatBSOptions }
 export type { BSDate, DualDate }
 
 /**
- * Returns the current date as both BS and AD with weekday and month name.
+ * Returns the current Nepal calendar date as both BS and AD with weekday and month name.
+ * The AD Date is a UTC-midnight calendar-date carrier, like toAD() output.
  */
 export function today(): DualDate {
-  const ad = new Date()
+  const parts = new Intl.DateTimeFormat('en-US', {
+    timeZone: 'Asia/Kathmandu',
+    year: 'numeric',
+    month: 'numeric',
+    day: 'numeric',
+  }).formatToParts(new Date())
+  const getPart = (type: string): number => Number(parts.find(part => part.type === type)?.value)
+  const ad = new Date(Date.UTC(getPart('year'), getPart('month') - 1, getPart('day')))
   const bs = adToBs(ad)
-  // getUTCDay() for weekday — consistent with the UTC-based date system used throughout
   return {
     bs,
     ad,

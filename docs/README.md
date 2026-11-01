@@ -1,6 +1,6 @@
 # Documentation Index
 
-This folder contains all project documentation for `nepali-calendar-engine`.
+This folder contains all project documentation for `mero-patro`.
 
 ## Recommended reading order
 

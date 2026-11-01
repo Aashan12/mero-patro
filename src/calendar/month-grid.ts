@@ -1,7 +1,8 @@
 import type { CalendarMonth, CalendarDay, CalendarOptions } from './types.js'
 import type { BSDate } from '../converter/types.js'
 import { bsToAd } from '../converter/bs-to-ad.js'
-import { adToBs } from '../converter/ad-to-bs.js'
+import { today } from '../converter/index.js'
+import { BS_YEAR_MIN, BS_YEAR_MAX } from '../converter/utils.js'
 import { getMonthDayCount } from '../data/bs-month-lengths.js'
 import { getMonthName } from '../i18n/months.js'
 import { getWeekdayName } from '../i18n/weekdays.js'
@@ -25,12 +26,13 @@ export function getMonthDays(bsYear: number, bsMonth: number): number {
 function buildDay(
   bsDate: BSDate,
   isCurrentMonth: boolean,
-  todayBs: BSDate,
+  todayBs: BSDate | null,
   options: Required<CalendarOptions>
 ): CalendarDay {
   const ad = bsToAd(bsDate)
   const weekday = getWeekdayName(ad.getUTCDay())
   const isToday =
+    todayBs !== null &&
     bsDate.year === todayBs.year &&
     bsDate.month === todayBs.month &&
     bsDate.day === todayBs.day
@@ -70,13 +72,17 @@ export async function getMonthCalendar(
   const firstDayAd = bsToAd({ year: bsYear, month: bsMonth, day: 1 })
   const startWeekday = firstDayAd.getUTCDay() // 0 = Sunday, consistent with UTC-based dates
 
-  const todayAd = new Date()
-  const todayBs = adToBs(todayAd)
+  let todayBs: BSDate | null = null
+  try {
+    todayBs = today().bs
+  } catch (error) {
+    if (!(error instanceof RangeError)) throw error
+  }
 
   const days: CalendarDay[] = []
 
   // Overflow days from the previous month (to complete the first week row)
-  if (opts.includeAdjacentDays && startWeekday > 0){
+  if (opts.includeAdjacentDays && startWeekday > 0 && (bsMonth > 1 || bsYear > BS_YEAR_MIN)) {
     const prevMonth = bsMonth === 1 ? 12 : bsMonth - 1
     const prevYear = bsMonth === 1 ? bsYear - 1 : bsYear
     const prevMonthDays = getMonthDays(prevYear, prevMonth)
@@ -93,7 +99,7 @@ export async function getMonthCalendar(
   }
 
   // Overflow days from the next month (to complete the last week row)
-  if (opts.includeAdjacentDays) {
+  if (opts.includeAdjacentDays && (bsMonth < 12 || bsYear < BS_YEAR_MAX)) {
     const currentLength = days.length
     const remainder = currentLength % 7
     if (remainder !== 0) {

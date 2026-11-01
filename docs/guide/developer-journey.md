@@ -20,7 +20,7 @@ import {
   getPanchang, ensurePanchangYear, preloadAllPanchang,
   getEventsForDate, getEventsForMonth, getAuspiciousDates, registerEvents,
   isAuspicious,
-} from 'nepali-calendar-engine'
+} from 'mero-patro'
 ```
 
 ## 2. Developer setup and first interaction
@@ -37,7 +37,7 @@ pnpm run test
 ```
 
 ```ts
-import { toBS, toAD, getMonthCalendar } from 'nepali-calendar-engine'
+import { toBS, toAD, getMonthCalendar } from 'mero-patro'
 
 const bs = toBS(new Date('2025-04-13'))
 const ad = toAD({ year: 2082, month: 1, day: 1 })

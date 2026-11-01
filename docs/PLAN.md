@@ -1,4 +1,4 @@
-# Project Plan — nepali-calendar-engine
+# Project Plan — mero-patro
 
 > **Branch:** `enhancement-overall`
 > **Last updated:** 2026-03-27
@@ -191,11 +191,11 @@
 
 ## Phase E — Release Preparation
 
-**Goal:** Publish v1.0.0 to npm under the `@meroevent` scope.
+**Goal:** Publish v1.0.0 to npm as `mero-patro`.
 
 ### E1 — Package identity
-- [ ] Confirm final package name: `@meroevent/nepali-calendar-engine` or `nepali-calendar-engine`
-- [ ] Update `package.json` name field
+- [x] Confirm final package name: `mero-patro`
+- [x] Update `package.json` name field
 - [ ] Write `CHANGELOG.md` entry for v1.0.0
 - [ ] Update root `README.md` with install badge, npm link, coverage badge
 

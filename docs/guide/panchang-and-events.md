@@ -37,7 +37,7 @@ In practice, this means:
 ## Loading panchang data
 
 ```ts
-import { ensurePanchangYear, getPanchang } from 'nepali-calendar-engine'
+import { ensurePanchangYear, getPanchang } from 'mero-patro'
 
 // Load the year's data once (async, subsequent calls are cached)
 await ensurePanchangYear(2082)
@@ -49,7 +49,7 @@ const p = getPanchang({ year: 2082, month: 1, day: 1 })
 To preload all available years at once (e.g. at app startup):
 
 ```ts
-import { preloadAllPanchang } from 'nepali-calendar-engine'
+import { preloadAllPanchang } from 'mero-patro'
 
 await preloadAllPanchang()
 ```
@@ -122,7 +122,7 @@ That is the right tradeoff for correctness, but you should avoid calling it repe
 ### Getting events for a date
 
 ```ts
-import { getEventsForDate } from 'nepali-calendar-engine'
+import { getEventsForDate } from 'mero-patro'
 
 const events = getEventsForDate({ year: 2082, month: 7, day: 15 })
 // Returns CalendarEvent[]
@@ -146,7 +146,7 @@ Some events also include provenance metadata in runtime results so applications 
 ### Getting all events in a month
 
 ```ts
-import { getEventsForMonth } from 'nepali-calendar-engine'
+import { getEventsForMonth } from 'mero-patro'
 
 const all = getEventsForMonth(2082, 7)  // all events in Kartik 2082
 ```
@@ -191,7 +191,7 @@ import {
   listInternationalObservances,
   getInternationalObservanceById,
   getInternationalObservancesByAdDate,
-} from 'nepali-calendar-engine'
+} from 'mero-patro'
 
 const all = listInternationalObservances()
 const worldHealth = getInternationalObservanceById('world-health-day')
@@ -211,7 +211,7 @@ Metadata includes source authority, authority tier, review cadence, last-reviewe
 Use `registerEvents` to inject events at runtime — useful for organization-specific holidays or admin-curated data:
 
 ```ts
-import { registerEvents } from 'nepali-calendar-engine'
+import { registerEvents } from 'mero-patro'
 
 registerEvents([
   {
@@ -256,7 +256,7 @@ The categories map to specific life events in Nepali tradition:
 ### Finding auspicious dates in a month
 
 ```ts
-import { getAuspiciousDates } from 'nepali-calendar-engine'
+import { getAuspiciousDates } from 'mero-patro'
 
 const days = getAuspiciousDates(2082, 2, 'wedding')
 
@@ -270,7 +270,7 @@ days.forEach(d => {
 ### Checking a specific date
 
 ```ts
-import { isAuspicious } from 'nepali-calendar-engine'
+import { isAuspicious } from 'mero-patro'
 
 const result = isAuspicious({ year: 2082, month: 2, day: 14 })
 // 'auspicious' | 'inauspicious' | 'neutral'

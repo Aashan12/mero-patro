@@ -11,8 +11,8 @@ import {
 /**
  * Converts a JavaScript Date (Gregorian/AD) to a Bikram Sambat date.
  *
- * The conversion reads UTC date components from the input Date, making it
- * timezone-safe regardless of how the Date was constructed.
+ * The conversion reads UTC date components from the input Date. Construct
+ * calendar-date inputs at UTC midnight to avoid local timezone shifts.
  *
  * Complexity: O(log n) — binary search over yearDayOffsets to find the year,
  * then O(1) month lookup. n = 91 (years in dataset).
@@ -70,7 +70,7 @@ export function adToBs(adDate: Date): BSDate {
   /* istanbul ignore next */
   if (day < 1 || day > monthLen) {
     throw new Error(
-      `[nepali-calendar-engine] Internal error: computed day ${day} out of range ` +
+      `[mero-patro] Internal error: computed day ${day} out of range ` +
       `for BS ${year}/${mi + 1} (length ${monthLen}). Please report this bug.`
     )
   }

@@ -1,9 +1,9 @@
 import { defineConfig } from 'vitepress'
 
 export default defineConfig({
-  title: 'Nepali Calendar Engine',
-  description: 'Documentation for nepali-calendar-engine',
-  base: '/calendar-package-AD-BS/',
+  title: 'Mero Patro',
+  description: 'Documentation for mero-patro',
+  base: '/mero-patro/',
   cleanUrls: true,
   ignoreDeadLinks: true,
   themeConfig: {

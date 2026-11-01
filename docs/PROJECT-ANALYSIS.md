@@ -1,6 +1,6 @@
 # 📅 Nepali Calendar Engine - Comprehensive Project Analysis
 
-> **Package:** `nepali-calendar-engine` v0.1.0  
+> **Package:** `mero-patro` v0.1.0
 > **License:** MIT  
 > **Analysis Date:** March 23, 2026  
 
@@ -144,7 +144,7 @@ calendar-package/
 **BS → AD Conversion:**
 ```typescript
 toBS(adDate: Date): BSDate
-// Example: new Date(2025, 3, 14) → { year: 2082, month: 1, day: 1 }
+// Example: new Date('2025-04-14T00:00:00Z') → { year: 2082, month: 1, day: 1 }
 ```
 
 **AD → BS Conversion:**
@@ -580,22 +580,22 @@ pnpm accuracy:report         # Generate accuracy report
 
 ### Basic Date Conversion
 ```typescript
-import { toBS, toAD } from 'nepali-calendar-engine'
+import { toBS, toAD } from 'mero-patro'
 
 // Convert AD to BS
-const bsDate = toBS(new Date(2025, 3, 14))  // { year: 2082, month: 1, day: 1 }
+const bsDate = toBS(new Date('2025-04-14T00:00:00Z'))  // { year: 2082, month: 1, day: 1 }
 
 // Convert BS to AD
 const adDate = toAD({ year: 2082, month: 1, day: 1 })  // 2025-04-14
 
 // Get today in both calendars
-import { today } from 'nepali-calendar-engine'
+import { today } from 'mero-patro'
 const now = today()  // { bs: {...}, ad: Date(...) }
 ```
 
 ### Generate Monthly Calendar
 ```typescript
-import { getMonthCalendar } from 'nepali-calendar-engine'
+import { getMonthCalendar } from 'mero-patro'
 
 // Get Baishakh 2082 with full metadata
 const calendar = await getMonthCalendar(2082, 1, {
@@ -611,7 +611,7 @@ console.log(calendar.stats.festivalCount)  // 3
 
 ### Get Festival Information
 ```typescript
-import { getEventsForDate, getEventsForMonth } from 'nepali-calendar-engine'
+import { getEventsForDate, getEventsForMonth } from 'mero-patro'
 
 // Get events for a specific date
 const events = getEventsForDate({ year: 2082, month: 1, day: 1 })
@@ -624,7 +624,7 @@ console.log(monthEvents.length)  // 15+ events
 
 ### Find Auspicious Dates
 ```typescript
-import { getAuspiciousDates, isAuspicious } from 'nepali-calendar-engine'
+import { getAuspiciousDates, isAuspicious } from 'mero-patro'
 
 // Get all auspicious dates for weddings in a month
 const weddingDates = getAuspiciousDates(2082, 1, 'wedding')
@@ -637,7 +637,7 @@ console.log(classification)  // "auspicious" | "neutral" | "inauspicious"
 
 ### Panchang Lookup
 ```typescript
-import { getPanchang, ensurePanchangYear } from 'nepali-calendar-engine'
+import { getPanchang, ensurePanchangYear } from 'mero-patro'
 
 // Ensure panchang data is loaded
 await ensurePanchangYear(2082)

@@ -16,9 +16,9 @@ const VERIFIED_CONVERSIONS = [
 ]
 
 function formatDate(d: Date): string {
-  const y = d.getFullYear()
-  const m = String(d.getMonth() + 1).padStart(2, '0')
-  const day = String(d.getDate()).padStart(2, '0')
+  const y = d.getUTCFullYear()
+  const m = String(d.getUTCMonth() + 1).padStart(2, '0')
+  const day = String(d.getUTCDate()).padStart(2, '0')
   return `${y}-${m}-${day}`
 }
 
@@ -64,16 +64,16 @@ describe('Date Conversion Accuracy (Reference Comparison)', () => {
   describe('Month-start dates are consecutive', () => {
     it('Baishakh 1 of 2082 falls on April 14, 2025', () => {
       const ad = toAD({ year: 2082, month: 1, day: 1 })
-      expect(ad.getFullYear()).toBe(2025)
-      expect(ad.getMonth()).toBe(3) // April (0-indexed)
-      expect(ad.getDate()).toBe(14)
+      expect(ad.getUTCFullYear()).toBe(2025)
+      expect(ad.getUTCMonth()).toBe(3) // April (0-indexed)
+      expect(ad.getUTCDate()).toBe(14)
     })
 
-    it('Magh 1 of 2082 falls on January 14, 2026', () => {
+    it('Magh 1 of 2082 falls on January 15, 2026', () => {
       const ad = toAD({ year: 2082, month: 10, day: 1 })
-      expect(ad.getFullYear()).toBe(2026)
-      expect(ad.getMonth()).toBe(0) // January
-      expect(ad.getDate()).toBe(15) // Note: Some sources say 14, our engine returns 15
+      expect(ad.getUTCFullYear()).toBe(2026)
+      expect(ad.getUTCMonth()).toBe(0) // January
+      expect(ad.getUTCDate()).toBe(15)
     })
   })
 })

@@ -7,7 +7,7 @@ For most applications, this is the highest-level API you should start with. It g
 ## Basic usage
 
 ```ts
-import { getMonthCalendar } from 'nepali-calendar-engine'
+import { getMonthCalendar } from 'mero-patro'
 
 const calendar = await getMonthCalendar(2082, 1)  // Baishakh, BS 2082
 ```
@@ -28,7 +28,7 @@ interface CalendarMonth {
   }
   totalDays: number          // Actual days in this BS month (29–32)
   startWeekday: number       // Weekday of the 1st (0 = Sunday, 6 = Saturday)
-  days: CalendarDay[]        // 35–42 days (always complete weeks)
+  days: CalendarDay[]        // complete weeks except at supported-range boundaries
 }
 ```
 
@@ -53,7 +53,7 @@ interface CalendarDay {
 
 ## The grid layout
 
-The grid **always starts on Sunday** and always contains complete weeks. The number of cells is always a multiple of 7, between 35 and 42.
+With adjacent days enabled, months inside the supported BS 2000–2090 range start on Sunday and contain complete weeks (usually 35 or 42 cells). The first and last supported months omit adjacent days outside the dataset, so those two grids can have partial edge weeks.
 
 When the 1st of the month falls mid-week, the grid is padded with the **preceding month's trailing days**. Similarly, after the last day of the month, the grid is padded with the **next month's leading days**. These padding days have `isCurrentMonth: false`.
 
@@ -124,7 +124,7 @@ const cal = await getMonthCalendar(2082, 1, {
 If you render multiple months (e.g. a year view or month navigation), preload panchang data before rendering:
 
 ```ts
-import { preloadAllPanchang, getMonthCalendar } from 'nepali-calendar-engine'
+import { preloadAllPanchang, getMonthCalendar } from 'mero-patro'
 
 // Load all available panchang years once at app startup
 await preloadAllPanchang()
@@ -138,7 +138,7 @@ const feb = await getMonthCalendar(2082, 2)
 Or preload a single year if you only need one:
 
 ```ts
-import { ensurePanchangYear } from 'nepali-calendar-engine'
+import { ensurePanchangYear } from 'mero-patro'
 
 await ensurePanchangYear(2082)
 // All months of 2082 are now cached
@@ -147,7 +147,7 @@ await ensurePanchangYear(2082)
 ## Navigation helpers
 
 ```ts
-import { nextMonth, prevMonth, monthRange } from 'nepali-calendar-engine'
+import { nextMonth, prevMonth, monthRange } from 'mero-patro'
 
 nextMonth(2082, 12)  // → { year: 2083, month: 1 }
 prevMonth(2082, 1)   // → { year: 2081, month: 12 }
@@ -164,7 +164,7 @@ monthRange(
 
 ```tsx
 import { useEffect, useState } from 'react'
-import { getMonthCalendar, CalendarMonth } from 'nepali-calendar-engine'
+import { getMonthCalendar, CalendarMonth } from 'mero-patro'
 
 function NepaliCalendar({ year, month }: { year: number; month: number }) {
   const [cal, setCal] = useState<CalendarMonth | null>(null)
@@ -205,7 +205,7 @@ function NepaliCalendar({ year, month }: { year: number; month: number }) {
 If you only need the number of days in a month without building the full grid:
 
 ```ts
-import { getMonthDays } from 'nepali-calendar-engine'
+import { getMonthDays } from 'mero-patro'
 
 getMonthDays(2082, 1)   // 31
 getMonthDays(2082, 2)   // 32

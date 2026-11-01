@@ -50,7 +50,7 @@ export function exportToICS(
     const titleEn = event.name.en
     const titleNe = event.name.ne
     const summary = titleNe !== undefined ? `${titleEn} (${titleNe})` : titleEn
-    const uid = `${event.id}-${bsDate.year}-${bsDate.month}-${bsDate.day}@nepali-calendar-engine`
+    const uid = `${event.id}-${bsDate.year}-${bsDate.month}-${bsDate.day}@mero-patro`
 
     lines.push('BEGIN:VEVENT')
     lines.push(`UID:${uid}`)

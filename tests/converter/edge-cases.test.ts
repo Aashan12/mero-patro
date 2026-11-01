@@ -1,5 +1,5 @@
-import { describe, it, expect } from 'vitest'
-import { toBS, toAD, formatBS } from '../../src/converter/index.js'
+import { describe, it, expect, vi } from 'vitest'
+import { toBS, toAD, formatBS, today } from '../../src/converter/index.js'
 import { getMonthLengths } from '../../src/data/bs-month-lengths.js'
 
 function utc(year: number, month: number, day: number): Date {
@@ -122,11 +122,60 @@ describe('Chaitra variable length', () => {
     expect(() => toAD({ year: 2082, month: 12, day: 31 })).toThrowError(RangeError)
   })
 
-  it('BS 2084 Chaitra has 31 days', () => {
+  it('BS 2084 Chaitra has 30 days', () => {
     const lengths = getMonthLengths(2084)
-    expect(lengths[11]).toBe(31)
-    expect(() => toAD({ year: 2084, month: 12, day: 31 })).not.toThrow()
-    expect(() => toAD({ year: 2084, month: 12, day: 32 })).toThrowError(RangeError)
+    expect(lengths[11]).toBe(30)
+    expect(() => toAD({ year: 2084, month: 12, day: 30 })).not.toThrow()
+    expect(() => toAD({ year: 2084, month: 12, day: 31 })).toThrowError(RangeError)
+  })
+})
+
+describe('independent published month starts', () => {
+  const anchors = [
+    { bs: { year: 2084, month: 3, day: 1 }, ad: '2027-06-15' },
+    { bs: { year: 2084, month: 5, day: 1 }, ad: '2027-08-17' },
+    { bs: { year: 2084, month: 10, day: 1 }, ad: '2028-01-14' },
+    { bs: { year: 2085, month: 3, day: 1 }, ad: '2028-06-15' },
+    { bs: { year: 2085, month: 6, day: 1 }, ad: '2028-09-16' },
+    { bs: { year: 2086, month: 2, day: 1 }, ad: '2029-05-14' },
+    { bs: { year: 2086, month: 10, day: 1 }, ad: '2030-01-14' },
+  ]
+
+  for (const { bs, ad } of anchors) {
+    it(`BS ${bs.year}/${bs.month}/1 is AD ${ad}`, () => {
+      expect(toAD(bs).toISOString().slice(0, 10)).toBe(ad)
+      expect(toBS(utc(...ad.split('-').map(Number) as [number, number, number]))).toEqual(bs)
+    })
+  }
+})
+
+describe('invalid numeric dates', () => {
+  it('rejects invalid Gregorian dates', () => {
+    expect(() => toBS(new Date(NaN))).toThrowError(RangeError)
+  })
+
+  it('rejects fractional and non-finite BS parts', () => {
+    expect(() => toAD({ year: 2084.5, month: 1, day: 1 })).toThrowError(RangeError)
+    expect(() => toAD({ year: 2084, month: NaN, day: 1 })).toThrowError(RangeError)
+    expect(() => toAD({ year: 2084, month: 1, day: 1.5 })).toThrowError(RangeError)
+  })
+})
+
+describe('today in Nepal', () => {
+  it('changes date at Nepal midnight, 18:15 UTC', () => {
+    vi.useFakeTimers()
+    try {
+      vi.setSystemTime(new Date('2025-04-13T18:14:59Z'))
+      expect(today().bs).toEqual({ year: 2081, month: 12, day: 31 })
+
+      vi.setSystemTime(new Date('2025-04-13T18:15:00Z'))
+      const result = today()
+      expect(result.bs).toEqual({ year: 2082, month: 1, day: 1 })
+      expect(result.ad.toISOString()).toBe('2025-04-14T00:00:00.000Z')
+      expect(result.weekday.en).toBe('Monday')
+    } finally {
+      vi.useRealTimers()
+    }
   })
 })
 

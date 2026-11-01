@@ -1,6 +1,6 @@
 # Nepali Calendar Engine — Package Plan
 
-**Package Name:** `nepali-calendar-engine`  
+**Package Name:** `mero-patro`
 **Version:** 0.1.0 (Initial Development)  
 **Date:** March 22, 2026  
 **Organization:** Digital Events Pvt Ltd  
@@ -154,7 +154,7 @@ Nepal has approximately 50+ recognized festivals, 20+ government public holidays
 ### 4.2 Directory Structure
 
 ```
-nepali-calendar-engine/
+mero-patro/
 ├── src/
 │   ├── converter/                  # Layer 1: BS ↔ AD conversion
 │   │   ├── bs-to-ad.ts
@@ -443,7 +443,7 @@ This is the labor-intensive phase. The team must:
 - `tsup` build producing ESM + CJS outputs with type declarations
 - Package size audit (target: under 500 KB including all datasets)
 - Performance benchmark: `getMonthCalendar()` with full enrichment must complete in under 10ms
-- npm publish as `nepali-calendar-engine` (scoped, private or public per team decision)
+- npm publish as `mero-patro`
 
 ---
 

@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest'
+import { describe, it, expect, vi } from 'vitest'
 import { getMonthCalendar, getMonthDays } from '../../src/calendar/month-grid.js'
 import { nextMonth, prevMonth, monthRange } from '../../src/calendar/navigation.js'
 
@@ -24,6 +24,40 @@ describe('getMonthDays', () => {
   it('throws RangeError for invalid month', async () => {
     expect(() => getMonthDays(2082, 0)).toThrowError(RangeError)
     expect(() => getMonthDays(2082, 13)).toThrowError(RangeError)
+  })
+})
+
+describe('calendar range and Nepal today', () => {
+  it('renders the first and last supported months without requesting unsupported adjacent years', async () => {
+    const options = { enrichPanchang: false, enrichEvents: false }
+    const first = await getMonthCalendar(2000, 1, options)
+    const last = await getMonthCalendar(2090, 12, options)
+    expect(first.days[0]?.bs).toEqual({ year: 2000, month: 1, day: 1 })
+    expect(last.days[last.days.length - 1]?.bs.year).toBe(2090)
+  })
+
+  it('marks today at Nepal midnight', async () => {
+    vi.useFakeTimers()
+    try {
+      vi.setSystemTime(new Date('2025-04-13T18:15:00Z'))
+      const month = await getMonthCalendar(2082, 1, { enrichPanchang: false, enrichEvents: false })
+      expect(month.days.filter(day => day.isToday).map(day => day.bs)).toEqual([
+        { year: 2082, month: 1, day: 1 },
+      ])
+    } finally {
+      vi.useRealTimers()
+    }
+  })
+
+  it('still renders supported months when the current date is outside coverage', async () => {
+    vi.useFakeTimers()
+    try {
+      vi.setSystemTime(new Date('2040-01-01T00:00:00Z'))
+      const month = await getMonthCalendar(2082, 1, { enrichPanchang: false, enrichEvents: false })
+      expect(month.days.every(day => !day.isToday)).toBe(true)
+    } finally {
+      vi.useRealTimers()
+    }
   })
 })
 

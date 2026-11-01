@@ -1,6 +1,6 @@
 /**
  * ═══════════════════════════════════════════════════════════════════════════════
- *  nepali-calendar-engine — Accuracy Comparison Engine
+ *  mero-patro — Accuracy Comparison Engine
  * ═══════════════════════════════════════════════════════════════════════════════
  *
  *  Compares our calendar data against established reference calendars
@@ -74,9 +74,9 @@ function loadReferenceData(): any {
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 
 function formatDate(d: Date): string {
-  const y = d.getFullYear()
-  const m = String(d.getMonth() + 1).padStart(2, '0')
-  const day = String(d.getDate()).padStart(2, '0')
+  const y = d.getUTCFullYear()
+  const m = String(d.getUTCMonth() + 1).padStart(2, '0')
+  const day = String(d.getUTCDate()).padStart(2, '0')
   return `${y}-${m}-${day}`
 }
 
@@ -315,36 +315,33 @@ function testSpecialDates(ref: any): TestResult[] {
     })
   }
 
-  // Test Ekadashi dates (scan each month for tithi 11 Shukla and tithi 26 Krishna)
+  // A solar BS month need not contain exactly one of each lunar Ekadashi.
+  // Count sunrise tithis and kshaya Ekadashis across the whole BS year.
   let ekadashiFound = 0
-  let ekadashiExpected = 0
+  let kshayaEkadashi = 0
 
   for (let month = 1; month <= 12; month++) {
-    ekadashiExpected += 2 // One Shukla and one Krishna per month
-
     const daysInMonth = getMonthDayCountOrFallback(month)
-
-    let foundShukla = false
-    let foundKrishna = false
 
     for (let day = 1; day <= daysInMonth; day++) {
       const panchang = getPanchang({ year: 2082, month, day })
       if (!panchang) continue
 
-      if (panchang.tithi.number === 11 && panchang.paksha === 'shukla') foundShukla = true
-      if (panchang.tithi.number === 26 && panchang.paksha === 'krishna') foundKrishna = true
+      if (panchang.tithi.number === 11 || panchang.tithi.number === 26) ekadashiFound++
+      if (panchang.tithiType === 'kshaya' &&
+          (panchang.tithi.number === 10 || panchang.tithi.number === 25)) {
+        ekadashiFound++
+        kshayaEkadashi++
+      }
     }
-
-    if (foundShukla) ekadashiFound++
-    if (foundKrishna) ekadashiFound++
   }
 
   results.push({
     category,
-    testName: `Ekadashi detection (24 expected across 12 months)`,
-    status: ekadashiFound >= 22 ? 'PASS' : (ekadashiFound >= 18 ? 'WARN' : 'FAIL'),
-    expected: `${ekadashiExpected} Ekadashi dates found`,
-    actual: `${ekadashiFound} Ekadashi dates found`,
+    testName: 'Ekadashi coverage sanity across BS 2082',
+    status: ekadashiFound >= 24 && ekadashiFound <= 26 ? 'PASS' : 'WARN',
+    expected: '24–26 lunar Ekadashi occurrences in one solar year',
+    actual: `${ekadashiFound} occurrences, including ${kshayaEkadashi} kshaya`,
   })
 
   return results
@@ -475,7 +472,7 @@ function generateReport(report: ComparisonReport): string {
 
   lines.push('# 📊 Calendar Accuracy Report — BS 2082')
   lines.push('')
-  lines.push(`> **Package:** \`nepali-calendar-engine\` v${report.engineVersion}`)
+  lines.push(`> **Package:** \`mero-patro\` v${report.engineVersion}`)
   lines.push(`> **Generated:** ${report.timestamp}`)
   lines.push(`> **Reference:** Hamro Patro, Drik Panchang, Nepal Rashtriya Panchang`)
   lines.push('')
@@ -488,7 +485,7 @@ function generateReport(report: ComparisonReport): string {
   lines.push('')
   lines.push(`| Metric | Score |`)
   lines.push(`|--------|-------|`)
-  lines.push(`| **Overall Accuracy** | ${overallEmoji} **${report.overallAccuracy.toFixed(1)}%** |`)
+  lines.push(`| **BS 2082 spot-check pass rate** | ${overallEmoji} **${report.overallAccuracy.toFixed(1)}%** |`)
 
   for (const summary of report.categorySummaries) {
     const emoji = summary.accuracy >= 98 ? '🟢' : summary.accuracy >= 95 ? '🟡' : '🔴'
@@ -531,7 +528,7 @@ function generateReport(report: ComparisonReport): string {
       lines.push(`- ❌ ${item}`)
     }
   } else {
-    lines.push('_All tests passing — no enhancements needed!_')
+    lines.push('_No failed or warned checks._')
   }
   lines.push('')
 
@@ -570,16 +567,16 @@ function generateReport(report: ComparisonReport): string {
     lines.push('3. **Festival Dates:** Review festival resolution logic in `event-engine.ts`. Some tithi-based festivals may require multi-month search or adjusted tithi matching.')
   }
   if (!hasConversionIssues && !hasTithiIssues && !hasFestivalIssues) {
-    lines.push('All core data is accurate! Consider:')
-    lines.push('1. Extending panchang data to more years (2083-2090) with verified sources')
+    lines.push('These BS 2082 spot checks passed; they do not certify every supported date. Consider:')
+    lines.push('1. Independently reviewing panchang values for BS 2083–2090')
     lines.push('2. Adding government holidays for years beyond 2082')
-    lines.push('3. Cross-referencing with additional panchang sources for redundancy')
+    lines.push('3. Cross-referencing with additional calendar sources')
   }
   lines.push('')
 
   lines.push('---')
   lines.push('')
-  lines.push('*Report generated by `nepali-calendar-engine` accuracy comparison engine*')
+  lines.push('*Report generated by `mero-patro` accuracy comparison engine*')
 
   return lines.join('\n')
 }
@@ -695,7 +692,7 @@ async function main() {
   console.log('')
 
   const overallEmoji = overallAccuracy >= 98 ? '🟢' : overallAccuracy >= 95 ? '🟡' : '🔴'
-  console.log(`  ${overallEmoji} Overall Accuracy:  ${overallAccuracy.toFixed(1)}%  (${totalPassed}/${totalTests} tests)`)
+  console.log(`  ${overallEmoji} BS 2082 spot-check pass rate: ${overallAccuracy.toFixed(1)}% (${totalPassed}/${totalTests} checks)`)
   console.log('')
 
   for (const summary of categorySummaries) {

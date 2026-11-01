@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "generatedAt": "2026-03-26T09:29:21.876Z",
+    "generatedAt": "2026-11-01T06:10:38.531Z",
     "generatedBy": "pnpm trust:refresh-manifest",
     "source": "src/data/panchang/*.json (canonicalized JSON, key-sorted)",
     "algorithm": "sha256",
@@ -42,18 +42,18 @@
       "days": 365
     },
     "2084.json": {
-      "sha256": "1ea810957bd565f6c60cd47b35a49a4aec581dc054942fe293570d788763eaa9",
-      "bytes": 15404,
-      "days": 366
-    },
-    "2085.json": {
-      "sha256": "65c484478c911b920bb4d265796749c77643156f8e873ba613a379e21d8ec9b3",
-      "bytes": 15320,
+      "sha256": "19ecfb195b8ca563bc397366840c5ed2ed5d7a23f739cc35b6c1fcd5e5052682",
+      "bytes": 15362,
       "days": 365
     },
+    "2085.json": {
+      "sha256": "33ead8838e43a006d108df85b6c56e9148f523d4ccb11f1497ae01dbf8be1b12",
+      "bytes": 15362,
+      "days": 366
+    },
     "2086.json": {
-      "sha256": "a682585d58e724e06f0583faec2d8c6790ea0ec5e67c5263e1132b66ce8c530a",
-      "bytes": 15318,
+      "sha256": "cb164263b99e0310298eba6169d95ee5a32af268f99d08cd9e4433e26fbbcef0",
+      "bytes": 15319,
       "days": 365
     },
     "2087.json": {

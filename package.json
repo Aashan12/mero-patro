@@ -1,14 +1,14 @@
 {
-  "name": "nepali-calendar-engine",
+  "name": "mero-patro",
   "version": "0.1.0",
   "description": "Bikram Sambat calendar engine — conversion, grid generation, panchang, and festival data for Nepal",
   "author": "Prince Bhagat <prince.bhagat@peoplepetsplaces.org>",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/dexterhere/calendar-package-AD-BS.git"
+    "url": "https://github.com/Aashan12/mero-patro.git"
   },
-  "homepage": "https://dexterhere.github.io/calendar-package-AD-BS/",
+  "homepage": "https://github.com/Aashan12/mero-patro",
   "type": "module",
   "packageManager": "pnpm@10.18.3",
   "exports": {
@@ -39,7 +39,7 @@
     "test:coverage": "vitest run --coverage",
     "lint": "eslint src --ext .ts",
     "typecheck": "tsc --noEmit",
-    "prepublishOnly": "pnpm run build && pnpm run test",
+    "prepublishOnly": "pnpm run build && pnpm run test && pnpm run typecheck && pnpm run lint && pnpm run trust:check && pnpm run legal:check",
     "generate:panchang": "tsx --tsconfig scripts/tsconfig.scripts.json scripts/generate-panchang-v2.ts",
     "validate:panchang": "tsx --tsconfig scripts/tsconfig.scripts.json scripts/validate-panchang.ts",
     "validate:cross": "tsx --tsconfig scripts/tsconfig.scripts.json scripts/validation/cross-validate.ts",

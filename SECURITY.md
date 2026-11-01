@@ -2,7 +2,7 @@
 
 ## Scope
 
-This repository publishes `nepali-calendar-engine`, a developer-facing TypeScript package for Bikram Sambat date conversion, panchang lookup, and event resolution.
+This repository publishes `mero-patro`, a developer-facing TypeScript package for Bikram Sambat date conversion, panchang lookup, and event resolution.
 
 This package is primarily a computation and data package. It does not provide authentication, user accounts, network services, or a hosted SaaS environment. As a result, the security model here is different from a web application.
 
